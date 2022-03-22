@@ -1,0 +1,151 @@
+#!/usr/bin/env python3
+import argparse
+
+import os
+import sys
+import pathlib 
+import random
+from datetime import datetime
+
+
+""" 
+Some Arguments: 
+- comp_args 
+- sim_args 
+- opt_args 
+- design_only 
+- tb_only 
+- comp_only 
+- sim_only
+- gui 
+- dump_size 
+- dump 
+- do_file
+- t: test
+"""
+
+## Variables 
+###########################################################
+TestName = "hello"
+EnvName  = "prod"
+RootDir  = str((pathlib.Path(__file__).parent / "../../").resolve())
+RtlDir   = f"{RootDir}/rtl" 
+TBDir    = f"{RootDir}/tb/verif" 
+EnvDir   = f"{RootDir}/tb/environments/{EnvName}" 
+TestDir  = f"{RootDir}/tb/tests/{TestName}/sv" 
+Seed     = str(round(random.uniform(1111.11, 9999999.99), 2))
+GUI_on   = 0
+sim_only = 0
+
+# Generate Run Dir based on the seed and date time
+now = datetime.now()
+dt_string = now.strftime("%Y%m%d_%H%M")
+RunDir   = RootDir + "/tb/sim/testname_" + dt_string + "_" + Seed
+###########################################################
+
+## Some Checks
+###########################################################
+if not os.path.isdir(RtlDir):
+    print('RTL path specified does not exist')
+    sys.exit()
+
+if not os.path.isdir(RunDir):
+    os.mkdir(RunDir)
+    os.mkdir(RunDir+"/lists")
+    os.mkdir(RunDir+"/logs")
+
+###########################################################
+
+
+## Generating lists
+###########################################################
+os.chdir(RunDir)
+
+RtlVerilogFiles = [os.path.join(path, name) for path, subdirs, files in os.walk(RtlDir) for name in files if name.endswith(".v") or name.endswith(".sv")]
+RtlVhdlFiles    = [os.path.join(path, name) for path, subdirs, files in os.walk(RtlDir) for name in files if name.endswith(".vhd")]
+TBFiles         = [os.path.join(path, name) for path, subdirs, files in os.walk(TBDir) for name in files if name.endswith(".sv")]
+EnvFiles        = [os.path.join(path, name) for path, subdirs, files in os.walk(EnvDir) for name in files if name.endswith(".sv")]
+TestFiles       = [os.path.join(path, name) for path, subdirs, files in os.walk(TestDir) for name in files if name.endswith(".sv")]
+
+
+with open(f'{RunDir}/lists/rtl_verilog_files.list', 'w') as f:
+    for item in RtlVerilogFiles:
+        f.write("%s\n" % item)
+with open(f'{RunDir}/lists/rtl_vhdl_files.list', 'w') as f:
+    for item in RtlVhdlFiles:
+        f.write("%s\n" % item)
+with open(f'{RunDir}/lists/tb.list', 'w') as f:
+    for item in TBFiles:
+        f.write("%s\n" % item)
+with open(f'{RunDir}/lists/env.list', 'w') as f:
+    for item in EnvFiles:
+        f.write("%s\n" % item)
+with open(f'{RunDir}/lists/test.list', 'w') as f:
+    for item in TestFiles:
+        f.write("%s\n" % item)
+###########################################################
+
+## Compilation 
+###########################################################
+command = (f"vlog -sv " 
+           f"-f {RunDir}/lists/rtl_verilog_files.list "
+           f"-f {RunDir}/lists/tb.list "
+           f"-f {RunDir}/lists/env.list "
+           f"-f {RunDir}/lists/test.list "
+           f"-l logs/verilog_comp.log"
+          )   
+if sim_only == 0:            
+    print(command)
+    os.system(command)
+###########################################################
+
+## Optimization 
+###########################################################
+# command = (f"vlog -sv " 
+#            f"-f {RunDir}/lists/rtl_verilog_files.list "
+#            f"-f {RunDir}/lists/tb.list "
+#            f"-f {RunDir}/lists/env.list "
+#            f"-f {RunDir}/lists/test.list "
+#            f"-l logs/verilog_comp.log"
+#           )  
+# if sim_only == 0:     
+    # print(command)
+    # os.system(command)
+###########################################################
+
+## Simulation 
+###########################################################
+# if GUI_on == 0:
+#     GUI = "-c"
+# else: 
+#     GUI = "-gui" 
+
+# command = (f"vlog -sv " 
+#            f"-f {RunDir}/lists/rtl_verilog_files.list "
+#            f"-f {RunDir}/lists/tb.list "
+#            f"-f {RunDir}/lists/env.list "
+#            f"-f {RunDir}/lists/test.list "
+#            f"-l logs/verilog_comp.log"
+#           )     
+# if comp_only == 0:
+#     print(command)
+#     os.system(command)
+###########################################################
+
+
+# # Create the parser
+# my_parser = argparse.ArgumentParser(description='List the content of a folder')
+
+# # Add the arguments
+# my_parser.add_argument('Path',metavar='path',type=str,help='the path to list')
+
+# # Execute the parse_args() method
+# args = my_parser.parse_args()
+
+# input_path = args.Path
+
+# if not os.path.isdir(input_path):
+#     print('The path specified does not exist')
+#     sys.exit()
+
+# print('\n'.join(os.listdir(input_path)))

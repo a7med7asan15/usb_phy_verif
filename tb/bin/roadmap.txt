@@ -1,0 +1,11 @@
+# generate random stimulus 
+# search inside tb folder
+# search inside rtl folder except for ignored 
+# Make command line program, run test from command line 
+# compile c or assembly from tests 
+# run each test inside sim folder 
+# run > test > logs, work, wlf
+# Add arguments to command 
+# Change in Params based on tool
+# other flags such as -gui
+# other run params
