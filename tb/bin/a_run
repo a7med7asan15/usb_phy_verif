@@ -1,16 +1,28 @@
 #!/usr/bin/env python3
-import argparse
 
-import pre_do
+import args
+import os
+import helper
 import flow
 
-
 ## Generating Lists
-pre_do.check_path()
-pre_do.generate_lists()
+helper.check_path()
+os.chdir(args.RunDir)
+if args.sim_only:
+    print(args.BPrim + "SIMULATION ONLY" + args.TEND)
+else:
+    helper.generate_lists()
+    helper.copy_params()
 
 ## Compilation 
-flow.compile()
+if args.sim_only: 
+    print(args.BPrim + "SIMULATION ONLY" + args.TEND)
+else:
+    flow.compile()
+    flow.optimize()
+
+if args.comp_only == 0: 
+    flow.simulate()
 
 
 ## Optimization 
@@ -46,20 +58,3 @@ flow.compile()
 #     os.system(command)
 ###########################################################
 
-
-# # Create the parser
-# my_parser = argparse.ArgumentParser(description='List the content of a folder')
-
-# # Add the arguments
-# my_parser.add_argument('Path',metavar='path',type=str,help='the path to list')
-
-# # Execute the parse_args() method
-# args = my_parser.parse_args()
-
-# input_path = args.Path
-
-# if not os.path.isdir(input_path):
-#     print('The path specified does not exist')
-#     sys.exit()
-
-# print('\n'.join(os.listdir(input_path)))
