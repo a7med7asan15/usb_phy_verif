@@ -1,3 +1,0 @@
--comp_args
--opt_args 
--sim_args -do "add wave sim:/hdl_top/dut/*;add wave sim:/tb_top/*;run -all;"

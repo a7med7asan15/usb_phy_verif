@@ -1,46 +1,44 @@
+from ast import parse
 import pathlib 
 import random
 from datetime import datetime
 import argparse
+import sys
+
 
 # Colors 
+###########################################################
 TRED = '\33[91m'
 BRED = '\33[41m'
-
 TWarning = '\33[93m'
 BWarning = '\33[43m'
-
 TSuccess = '\33[92m'
 BSuccess = '\33[42m'
-
 TPrim = '\33[94m'
 BPrim = '\33[44m'
+TEND = '\33[0m' 
+###########################################################
 
-TEND = '\33[0m'
-
-       
 # Create the parser
-my_parser = argparse.ArgumentParser(description='List the content of a folder')
+###########################################################
+my_parser = argparse.ArgumentParser(fromfile_prefix_chars='@', add_help=False)
 
 # T/F arguments
 my_parser.add_argument('--comp_only',action="store_true")
 my_parser.add_argument('--tb_only',action="store_true")
 my_parser.add_argument('--design_only',action="store_true")
 my_parser.add_argument('--gui',action="store_true")
-my_parser.add_argument('--simple_tb',action="store_true")
 
 # Input arguments
 my_parser.add_argument('--sim_only',type=str)
-my_parser.add_argument('-t',type=str)
+my_parser.add_argument('-t','--test',type=str, required=True)
 
-# Execute the parse_args() method
 args_command = my_parser.parse_args()
-
-
-## Variables 
 ###########################################################
-## Command Args 
-TestName   = args_command.t
+
+## Required
+###########################################################
+TestName   = args_command.test
 EnvName    = "prod"
 
 ## Dirs
@@ -51,14 +49,40 @@ TBSimpleDir= f"{RootDir}/tb/simple"
 EnvDir     = f"{RootDir}/tb/environments/{EnvName}" 
 TestSVDir  = f"{RootDir}/tb/tests/{TestName}/sv" 
 TestDir    = f"{RootDir}/tb/tests/{TestName}" 
+###########################################################
+
+## Add Arguments from file to command
+###########################################################
+parsed_args = sys.argv[1:]
+with open(f'{TestDir}/params/run_params.txt', 'r') as f:
+    for line in f:
+        if line[0] not in ("#", "\n", " "):
+            print("_" + line + "_")
+            line = line.replace("\n", "")
+            parsed_args.append(line) 
+
+print(parsed_args)
+args_command = my_parser.parse_args(parsed_args)
+
+print("Here are list of Arguments")
+print(args_command)
+###########################################################
+
+
+## Variables 
+###########################################################
+
+
+## Command Args 
+
 
 ## Command Args
 GUI_on     = int(args_command.gui)
 comp_only  = int(args_command.comp_only)
 sim_only   = args_command.sim_only
-DesignOnly = args_command.design_only or args_command.simple_tb
+DesignOnly = args_command.design_only or args_command.test == "no_test"
 TBOnly     = args_command.tb_only
-SimpleTB   = int(args_command.simple_tb)
+SimpleTB   = int(args_command.test == "no_test")
 DesignTB   = not (DesignOnly or TBOnly)
 
 ## Editable Args 
@@ -72,14 +96,14 @@ dt_string = now.strftime("%Y%m%d_%H%M")
 if sim_only: 
     RunDir   = RootDir + "/tb/sim/" + sim_only
 else: 
-    RunDir   = RootDir + "/tb/sim/testname_" + dt_string + "_" + Seed
+    RunDir   = RootDir + "/tb/sim/" + TestName + "_" + dt_string + "_" + Seed
+
 ###########################################################
 
 if GUI_on == 0: 
     GUI = "-c"
 elif GUI_on == 1:
     GUI = "-gui"
-
 
 # Contents: 
 #  - Compilation 

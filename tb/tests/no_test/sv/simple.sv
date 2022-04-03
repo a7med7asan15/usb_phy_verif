@@ -1,4 +1,4 @@
-`include "../../rtl/utmi/usbf_defines.v"
+`include "../../../rtl/utmi/usbf_defines.v"
 
 module tb; 
     parameter	SSRAM_HADR = `USBF_SSRAM_HADR;

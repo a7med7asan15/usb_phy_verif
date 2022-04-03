@@ -8,6 +8,7 @@ import flow
 ## Generating Lists
 helper.do_checks()
 os.chdir(args.RunDir)
+
 if args.sim_only:
     print(args.BPrim + "SIMULATION ONLY" + args.TEND)
 else:

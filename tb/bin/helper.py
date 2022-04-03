@@ -42,7 +42,6 @@ def generate_lists():
     RtlVerilogFiles = [os.path.join(path, name) for path, subdirs, files in os.walk(args.RtlDir) for name in files if name.endswith(".v") or name.endswith(".sv")]
     #RtlVhdlFiles    = [os.path.join(path, name) for path, subdirs, files in os.walk(RtlDir) for name in files if name.endswith(".vhd")]
     TBFiles         = [os.path.join(path, name) for path, subdirs, files in os.walk(args.TBDir) for name in files if name.endswith(".sv")]
-    TBSimpleFiles   = [os.path.join(path, name) for path, subdirs, files in os.walk(args.TBSimpleDir) for name in files if name.endswith(".sv")]
     EnvFiles        = [os.path.join(path, name) for path, subdirs, files in os.walk(args.EnvDir) for name in files if name.endswith(".sv")]
     TestFiles       = [os.path.join(path, name) for path, subdirs, files in os.walk(args.TestSVDir) for name in files if name.endswith(".sv")]
 
@@ -55,9 +54,6 @@ def generate_lists():
     with open(f'{args.RunDir}/lists/tb.list', 'w') as f:
         for item in TBFiles:
             f.write("%s\n" % item)
-    with open(f'{args.RunDir}/lists/tb_simple.list', 'w') as f:
-        for item in TBSimpleFiles:
-            f.write("%s\n" % item)
     with open(f'{args.RunDir}/lists/env.list', 'w') as f:
         for item in EnvFiles:
             f.write("%s\n" % item)
@@ -69,11 +65,9 @@ def generate_lists():
 ## Copying Params Folder
 ###########################################################
 def copy_params(): 
-    if args.SimpleTB == 0: 
-        shutil.copytree(f"{args.TestDir}/params", f"{args.RunDir}/params")
-    elif args.SimpleTB == 1: 
-        shutil.copytree(f"{args.TBSimpleDir}/params", f"{args.RunDir}/params")
+    shutil.copytree(f"{args.TestDir}/params", f"{args.RunDir}/params")
 
 
 
 ###########################################################
+

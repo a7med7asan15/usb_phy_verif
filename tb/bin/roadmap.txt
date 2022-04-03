@@ -2,5 +2,4 @@
 # Read Args from file to command 
 # compile c or assembly from tests 
 # run each test inside sim folder 
-# Add arguments to command 
 # Change in Params based on tool
