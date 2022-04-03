@@ -6,8 +6,18 @@ import shutil
 ## Some Checks
 ###########################################################
 def throw_err(err): 
-    print(args.BPrim + f"Error: {err}" + args.TEND)
+    print(args.BRED + f"Error: {err}" + args.TEND)
     sys.exit()
+
+def check_test(): 
+    if args.TestName: 
+        print(args.TestName)
+    else: 
+        if args.SimpleTB: 
+            print(args.SimpleTB)
+        else: 
+            throw_err("No test specified")
+
 
 def check_path(): 
     if not os.path.isdir(args.RtlDir):
@@ -21,6 +31,9 @@ def check_path():
             os.mkdir(args.RunDir+"/lists")
             os.mkdir(args.RunDir+"/logs")
 
+def do_checks(): 
+    check_test()
+    check_path()
 ###########################################################
 
 ## Generating lists
@@ -30,7 +43,7 @@ def generate_lists():
     #RtlVhdlFiles    = [os.path.join(path, name) for path, subdirs, files in os.walk(RtlDir) for name in files if name.endswith(".vhd")]
     TBFiles         = [os.path.join(path, name) for path, subdirs, files in os.walk(args.TBDir) for name in files if name.endswith(".sv")]
     TBSimpleFiles   = [os.path.join(path, name) for path, subdirs, files in os.walk(args.TBSimpleDir) for name in files if name.endswith(".sv")]
-    #EnvFiles        = [os.path.join(path, name) for path, subdirs, files in os.walk(args.EnvDir) for name in files if name.endswith(".sv")]
+    EnvFiles        = [os.path.join(path, name) for path, subdirs, files in os.walk(args.EnvDir) for name in files if name.endswith(".sv")]
     TestFiles       = [os.path.join(path, name) for path, subdirs, files in os.walk(args.TestSVDir) for name in files if name.endswith(".sv")]
 
     with open(f'{args.RunDir}/lists/rtl_verilog_files.list', 'w') as f:
@@ -45,9 +58,9 @@ def generate_lists():
     with open(f'{args.RunDir}/lists/tb_simple.list', 'w') as f:
         for item in TBSimpleFiles:
             f.write("%s\n" % item)
-    # with open(f'{args.RunDir}/lists/env.list', 'w') as f:
-    #     for item in EnvFiles:
-    #         f.write("%s\n" % item)
+    with open(f'{args.RunDir}/lists/env.list', 'w') as f:
+        for item in EnvFiles:
+            f.write("%s\n" % item)
     with open(f'{args.RunDir}/lists/test.list', 'w') as f:
         for item in TestFiles:
             f.write("%s\n" % item)

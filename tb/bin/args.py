@@ -31,7 +31,7 @@ my_parser.add_argument('--simple_tb',action="store_true")
 
 # Input arguments
 my_parser.add_argument('--sim_only',type=str)
-
+my_parser.add_argument('-t',type=str)
 
 # Execute the parse_args() method
 args_command = my_parser.parse_args()
@@ -40,15 +40,15 @@ args_command = my_parser.parse_args()
 ## Variables 
 ###########################################################
 ## Command Args 
-TestName   = "hello"
-#EnvName    = "prod"
+TestName   = args_command.t
+EnvName    = "prod"
 
 ## Dirs
 RootDir    = str((pathlib.Path(__file__).parent / "../../").resolve())
 RtlDir     = f"{RootDir}/rtl" 
 TBDir      = f"{RootDir}/tb/verif" 
 TBSimpleDir= f"{RootDir}/tb/simple" 
-#EnvDir     = f"{RootDir}/tb/environments/{EnvName}" 
+EnvDir     = f"{RootDir}/tb/environments/{EnvName}" 
 TestSVDir  = f"{RootDir}/tb/tests/{TestName}/sv" 
 TestDir    = f"{RootDir}/tb/tests/{TestName}" 
 

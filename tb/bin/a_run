@@ -6,7 +6,7 @@ import helper
 import flow
 
 ## Generating Lists
-helper.check_path()
+helper.do_checks()
 os.chdir(args.RunDir)
 if args.sim_only:
     print(args.BPrim + "SIMULATION ONLY" + args.TEND)
@@ -23,38 +23,4 @@ else:
 
 if args.comp_only == 0: 
     flow.simulate()
-
-
-## Optimization 
-###########################################################
-# command = (f"vlog -sv " 
-#            f"-f {RunDir}/lists/rtl_verilog_files.list "
-#            f"-f {RunDir}/lists/tb.list "
-#            f"-f {RunDir}/lists/env.list "
-#            f"-f {RunDir}/lists/test.list "
-#            f"-l logs/verilog_comp.log"
-#           )  
-# if sim_only == 0:     
-    # print(command)
-    # os.system(command)
-###########################################################
-
-## Simulation 
-###########################################################
-# if GUI_on == 0:
-#     GUI = "-c"
-# else: 
-#     GUI = "-gui" 
-
-# command = (f"vlog -sv " 
-#            f"-f {RunDir}/lists/rtl_verilog_files.list "
-#            f"-f {RunDir}/lists/tb.list "
-#            f"-f {RunDir}/lists/env.list "
-#            f"-f {RunDir}/lists/test.list "
-#            f"-l logs/verilog_comp.log"
-#           )     
-# if comp_only == 0:
-#     print(command)
-#     os.system(command)
-###########################################################
 
