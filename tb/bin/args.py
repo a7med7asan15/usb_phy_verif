@@ -32,6 +32,8 @@ my_parser.add_argument('--gui',action="store_true")
 # Input arguments
 my_parser.add_argument('--sim_only',type=str)
 my_parser.add_argument('-t','--test',type=str, required=True)
+my_parser.add_argument('-c','--collection',type=str, required=True)
+
 
 args_command = my_parser.parse_args()
 ###########################################################
@@ -39,6 +41,7 @@ args_command = my_parser.parse_args()
 ## Required
 ###########################################################
 TestName   = args_command.test
+collectName   = args_command.collection
 EnvName    = "prod"
 
 ## Dirs
@@ -47,8 +50,8 @@ RtlDir     = f"{RootDir}/rtl"
 TBDir      = f"{RootDir}/tb/verif" 
 TBSimpleDir= f"{RootDir}/tb/simple" 
 EnvDir     = f"{RootDir}/tb/environments/{EnvName}" 
-TestSVDir  = f"{RootDir}/tb/tests/{TestName}/sv" 
-TestDir    = f"{RootDir}/tb/tests/{TestName}" 
+TestSVDir  = f"{RootDir}/tb/tests/{collectName}/{TestName}/sv" 
+TestDir    = f"{RootDir}/tb/tests/{collectName}/{TestName}" 
 ###########################################################
 
 ## Add Arguments from file to command

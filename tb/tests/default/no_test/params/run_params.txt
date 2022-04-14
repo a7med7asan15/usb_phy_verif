@@ -1,4 +1,4 @@
---comp_only
+#--comp_only
 
 #-comp_args
 
