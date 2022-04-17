@@ -8,15 +8,15 @@ import sys
 
 # Colors 
 ###########################################################
-TRED = '\33[91m'
-BRED = '\33[41m'
+TRED     = '\33[91m'
+BRED     = '\33[41m'
 TWarning = '\33[93m'
 BWarning = '\33[43m'
 TSuccess = '\33[92m'
 BSuccess = '\33[42m'
-TPrim = '\33[94m'
-BPrim = '\33[44m'
-TEND = '\33[0m' 
+TPrim    = '\33[94m'
+BPrim    = '\33[44m'
+TEND     = '\33[0m' 
 ###########################################################
 
 # Create the parser
@@ -42,14 +42,14 @@ args_command = my_parser.parse_args()
 ###########################################################
 TestName   = args_command.test
 collectName   = args_command.collection
-EnvName    = "prod"
 
 ## Dirs
 RootDir    = str((pathlib.Path(__file__).parent / "../../").resolve())
 RtlDir     = f"{RootDir}/rtl" 
 TBDir      = f"{RootDir}/tb/verif" 
 TBSimpleDir= f"{RootDir}/tb/simple" 
-EnvDir     = f"{RootDir}/tb/environments/{EnvName}" 
+EnvDir     = f"{RootDir}/tb/environments/{collectName}" 
+EnvDefDir  = f"{RootDir}/tb/environments/default"
 TestSVDir  = f"{RootDir}/tb/tests/{collectName}/{TestName}/sv" 
 TestDir    = f"{RootDir}/tb/tests/{collectName}/{TestName}" 
 ###########################################################
@@ -57,7 +57,19 @@ TestDir    = f"{RootDir}/tb/tests/{collectName}/{TestName}"
 ## Add Arguments from file to command
 ###########################################################
 parsed_args = sys.argv[1:]
-with open(f'{TestDir}/params/run_params.txt', 'r') as f:
+with open(f'{EnvDefDir}/params/run_params', 'r') as f:
+    for line in f:
+        if line[0] not in ("#", "\n", " "):
+            print("_" + line + "_")
+            line = line.replace("\n", "")
+            parsed_args.append(line)
+with open(f'{EnvDir}/params/run_params', 'r') as f:
+    for line in f:
+        if line[0] not in ("#", "\n", " "):
+            print("_" + line + "_")
+            line = line.replace("\n", "")
+            parsed_args.append(line)
+with open(f'{TestDir}/params/run_params', 'r') as f:
     for line in f:
         if line[0] not in ("#", "\n", " "):
             print("_" + line + "_")

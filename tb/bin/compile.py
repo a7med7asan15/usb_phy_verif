@@ -1,5 +1,6 @@
 import os 
 import args 
+import helper
 
 ## Compilation 
 ###########################################################
@@ -28,4 +29,5 @@ def compile():
     command += f"-l logs/verilog_comp.log"           
     print(command)
     os.system(command)
+    helper.check_error("comp")
 ###########################################################

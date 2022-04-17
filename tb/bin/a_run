@@ -19,9 +19,13 @@ else:
 if args.sim_only: 
     print(args.BPrim + "SIMULATION ONLY" + args.TEND)
 else:
+    helper.print_info("***********************Compilation Started***********************")
     flow.compile()
+    helper.print_info("***********************Optimization Started***********************")
     flow.optimize()
+    
 
 if args.comp_only == 0: 
+    helper.print_info("***********************Simulation Started***********************")
     flow.simulate()
 

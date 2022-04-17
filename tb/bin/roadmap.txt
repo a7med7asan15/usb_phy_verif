@@ -1,5 +1,4 @@
 # Save last command 
-# Read Args from file to command 
 # compile c or assembly from tests 
-# run each test inside sim folder 
 # Change in Params based on tool
+# Change in Terminal
