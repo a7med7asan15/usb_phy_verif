@@ -1,6 +1,6 @@
 //  Interface: usbf_intf
 //
-interface usbf_intf
+interface sram_intf
     /*  package imports  */
     #(
         <parameter_list>
@@ -9,4 +9,4 @@ interface usbf_intf
     );
 
     
-endinterface: usbf_intf
+endinterface: sram_intf

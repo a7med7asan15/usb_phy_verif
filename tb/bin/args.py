@@ -79,8 +79,8 @@ with open(f'{TestDir}/params/run_params', 'r') as f:
 print(parsed_args)
 args_command = my_parser.parse_args(parsed_args)
 
-print("Here are list of Arguments")
-print(args_command)
+# print("Here are list of Arguments")
+# print(args_command)
 ###########################################################
 
 
@@ -123,7 +123,10 @@ elif GUI_on == 1:
 # Contents: 
 #  - Compilation 
 #  - Optimization 
+tbTop = "tb"
 #  - Simulation 
+
+
 
 
 """ 
